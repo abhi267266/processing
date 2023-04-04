@@ -11695,6 +11695,31 @@ public class PApplet implements PConstants {
   public PShape createShape(int kind, float... p) {
     return g.createShape(kind, p);
   }
+  
+  public PShape createShape(int kind, float... p) {
+    PShape shape;
+    if (kind == ELLIPSE) {
+        if (g.shapeMode == CORNER) {
+            shape = g.createShape(ELLIPSE, p[0], p[1], p[2], p[3]);
+        } else if (g.shapeMode == CENTER) {
+            shape = g.createShape(ELLIPSE, p[0] + p[2]/2, p[1] + p[3]/2, p[2], p[3]);
+        } else {
+            throw new RuntimeException("Unsupported shape mode: " + g.shapeMode);
+        }
+    } else if (kind == RECT) {
+        if (g.shapeMode == CORNER) {
+            shape = g.createShape(RECT, p[0], p[1], p[2], p[3]);
+        } else if (g.shapeMode == CENTER) {
+            shape = g.createShape(RECT, p[0] - p[2]/2, p[1] - p[3]/2, p[2], p[3]);
+        } else {
+            throw new RuntimeException("Unsupported shape mode: " + g.shapeMode);
+        }
+    } else {
+        shape = g.createShape(kind, p);
+    }
+    return shape;
+}
+
 
 
   /**
